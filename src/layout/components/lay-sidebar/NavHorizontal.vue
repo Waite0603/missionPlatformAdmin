@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { emitter } from "@/utils/mitt";
-import { useNav } from "@/layout/hooks/useNav";
-import LaySearch from "../lay-search/index.vue";
-import LayNotice from "../lay-notice/index.vue";
-import { responsiveStorageNameSpace } from "@/config";
-import { ref, nextTick, computed, onMounted } from "vue";
-import { storageLocal, isAllEmpty } from "@pureadmin/utils";
-import { usePermissionStoreHook } from "@/store/modules/permission";
-import LaySidebarItem from "../lay-sidebar/components/SidebarItem.vue";
-import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vue";
+import { emitter } from '@/utils/mitt'
+import { useNav } from '@/layout/hooks/useNav'
+import LaySearch from '../lay-search/index.vue'
+import LayNotice from '../lay-notice/index.vue'
+import { responsiveStorageNameSpace } from '@/config'
+import { ref, nextTick, computed, onMounted } from 'vue'
+import { storageLocal, isAllEmpty } from '@pureadmin/utils'
+import { usePermissionStoreHook } from '@/store/modules/permission'
+import LaySidebarItem from '../lay-sidebar/components/SidebarItem.vue'
+import LaySidebarFullScreen from '../lay-sidebar/components/SidebarFullScreen.vue'
 
-import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
-import Setting from "@iconify-icons/ri/settings-3-line";
+import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line'
+import Setting from '@iconify-icons/ri/settings-3-line'
 
-const menuRef = ref();
+const menuRef = ref()
 const showLogo = ref(
   storageLocal().getItem<StorageConfigs>(
     `${responsiveStorageNameSpace()}configure`
   )?.showLogo ?? true
-);
+)
 
 const {
   route,
@@ -30,21 +30,21 @@ const {
   userAvatar,
   backTopMenu,
   avatarsStyle
-} = useNav();
+} = useNav()
 
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
-);
+)
 
 nextTick(() => {
-  menuRef.value?.handleResize();
-});
+  menuRef.value?.handleResize()
+})
 
 onMounted(() => {
-  emitter.on("logoChange", key => {
-    showLogo.value = key;
-  });
-});
+  emitter.on('logoChange', key => {
+    showLogo.value = key
+  })
+})
 </script>
 
 <template>

@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { isAllEmpty } from "@pureadmin/utils";
-import { useNav } from "@/layout/hooks/useNav";
-import LaySearch from "../lay-search/index.vue";
-import LayNotice from "../lay-notice/index.vue";
-import { ref, toRaw, watch, onMounted, nextTick } from "vue";
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { getParentPaths, findRouteByPath } from "@/router/utils";
-import { usePermissionStoreHook } from "@/store/modules/permission";
-import LaySidebarExtraIcon from "../lay-sidebar/components/SidebarExtraIcon.vue";
-import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vue";
+import { isAllEmpty } from '@pureadmin/utils'
+import { useNav } from '@/layout/hooks/useNav'
+import LaySearch from '../lay-search/index.vue'
+import LayNotice from '../lay-notice/index.vue'
+import { ref, toRaw, watch, onMounted, nextTick } from 'vue'
+import { useRenderIcon } from '@/components/ReIcon/src/hooks'
+import { getParentPaths, findRouteByPath } from '@/router/utils'
+import { usePermissionStoreHook } from '@/store/modules/permission'
+import LaySidebarExtraIcon from '../lay-sidebar/components/SidebarExtraIcon.vue'
+import LaySidebarFullScreen from '../lay-sidebar/components/SidebarFullScreen.vue'
 
-import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
-import Setting from "@iconify-icons/ri/settings-3-line";
+import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line'
+import Setting from '@iconify-icons/ri/settings-3-line'
 
-const menuRef = ref();
-const defaultActive = ref(null);
+const menuRef = ref()
+const defaultActive = ref(null)
 
 const {
   route,
@@ -26,31 +26,31 @@ const {
   userAvatar,
   getDivStyle,
   avatarsStyle
-} = useNav();
+} = useNav()
 
 function getDefaultActive(routePath) {
-  const wholeMenus = usePermissionStoreHook().wholeMenus;
+  const wholeMenus = usePermissionStoreHook().wholeMenus
   /** 当前路由的父级路径 */
-  const parentRoutes = getParentPaths(routePath, wholeMenus)[0];
+  const parentRoutes = getParentPaths(routePath, wholeMenus)[0]
   defaultActive.value = !isAllEmpty(route.meta?.activePath)
     ? route.meta.activePath
-    : findRouteByPath(parentRoutes, wholeMenus)?.children[0]?.path;
+    : findRouteByPath(parentRoutes, wholeMenus)?.children[0]?.path
 }
 
 onMounted(() => {
-  getDefaultActive(route.path);
-});
+  getDefaultActive(route.path)
+})
 
 nextTick(() => {
-  menuRef.value?.handleResize();
-});
+  menuRef.value?.handleResize()
+})
 
 watch(
   () => [route.path, usePermissionStoreHook().wholeMenus],
   () => {
-    getDefaultActive(route.path);
+    getDefaultActive(route.path)
   }
-);
+)
 </script>
 
 <template>
