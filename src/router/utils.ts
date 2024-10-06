@@ -385,6 +385,7 @@ function getTopMenu(tag = false): menuType {
     usePermissionStoreHook().wholeMenus[0]?.children[0]
   )
   tag && useMultiTagsStoreHook().handleTags('push', topMenu)
+  
   return topMenu
 }
 

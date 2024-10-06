@@ -56,11 +56,13 @@ const wrapperEnv = (envConf: Recordable): ViteEnv => {
     VITE_ROUTER_HISTORY: '',
     VITE_CDN: false,
     VITE_HIDE_HOME: 'false',
-    VITE_COMPRESSION: 'none'
+    VITE_COMPRESSION: 'none',
+    VITE_API_URL: ''
   }
 
   for (const envName of Object.keys(envConf)) {
     let realName = envConf[envName].replace(/\\n/g, '\n')
+
     realName =
       realName === 'true' ? true : realName === 'false' ? false : realName
 
