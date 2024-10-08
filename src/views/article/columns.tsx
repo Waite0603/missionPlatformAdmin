@@ -2,7 +2,8 @@ import type { LoadingConfig, PaginationProps } from '@pureadmin/table'
 import type { PageParams, ArticleParams } from '@/api/articles'
 import { ref, onMounted, reactive } from 'vue'
 import { delay } from '@pureadmin/utils'
-import { getArticleList } from '@/api/articles'
+import { getArticleList, deleteArticle } from '@/api/articles'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export function useColumns() {
   const ArticleData = ref<ArticleParams[]>([])
@@ -88,6 +89,28 @@ export function useColumns() {
     loading.value = false
   }
 
+  // 删除文章
+  const deleteArticleData = async (id: number) => {
+    ElMessageBox.confirm('确定删除该文章吗?', '提示', {
+      type: 'warning'
+    }).then(() => {
+      deleteArticle(id)
+        .then(res => {
+          console.log(res)
+          if (res.code === 200) {
+            ElMessage.success('删除成功')
+            getArticleListData()
+          } else {
+            ElMessage.error(res.msg)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          ElMessage.error('删除失败')
+        })
+    })
+  }
+
   function onSizeChange(val) {
     pageParams.pageSize = val
     getArticleListData()
@@ -110,6 +133,8 @@ export function useColumns() {
     ArticleData,
     loading,
     columns,
+    getArticleListData,
+    deleteArticleData,
     pagination,
     loadingConfig,
     onSizeChange,
