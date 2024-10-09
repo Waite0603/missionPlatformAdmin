@@ -101,7 +101,6 @@ defineOptions({
 const handleAddArticle = async (articleData: object) => {
   try {
     const res = await addArticle(articleData)
-    console.log(res)
     if (res.code !== 200) {
       ElMessage.error(res.msg)
       return false
@@ -121,7 +120,6 @@ const handleAddArticle = async (articleData: object) => {
 const handleUpdateArticle = async (articleData: object) => {
   try {
     const res = await updateArticle(articleData)
-    console.log(res)
     if (res.code !== 200) {
       ElMessage.error(res.msg)
       return false

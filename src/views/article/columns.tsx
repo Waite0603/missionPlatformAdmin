@@ -82,7 +82,6 @@ export function useColumns() {
   // 获取文章列表
   const getArticleListData = async () => {
     const res = await getArticleList(pageParams)
-    console.log(res.data.data)
     ArticleData.value = res.data.data
     pagination.total = res.data.total
 

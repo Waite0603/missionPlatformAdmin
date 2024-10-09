@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import '@wangeditor/editor/dist/css/style.css'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { defineProps, reactive } from 'vue'
+import { reactive } from 'vue'
 
 import type { UploadProps, UploadUserFile } from 'element-plus'
 
