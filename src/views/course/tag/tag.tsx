@@ -1,4 +1,4 @@
-import { getCourseCategory, deleteCourseCategory } from '@/api/course'
+import { getCourseCategoryAPI, deleteCourseCategoryAPI } from '@/api/course'
 import type { CourseCategoryParams } from '@/api/course'
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -38,7 +38,7 @@ export const useTag = () => {
 
   // 获取课程分类
   const getCourseCategoryList = async () => {
-    const res = await getCourseCategory()
+    const res = await getCourseCategoryAPI()
     if (res.code !== 200) {
       ElMessage.error(res.msg)
       return
@@ -59,7 +59,7 @@ export const useTag = () => {
       cancelButtonText: '取消',
       type: 'warning'
     }).then(async () => {
-      const res = await deleteCourseCategory(id)
+      const res = await deleteCourseCategoryAPI(id)
       if (res.code !== 200) {
         ElMessage.error(res.msg)
         return

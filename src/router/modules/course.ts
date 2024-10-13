@@ -15,6 +15,15 @@ export default {
         title: '分类标签',
         showParent: true
       }
+    },
+    {
+      path: '/courses/list',
+      name: 'CoursesList',
+      component: () => import('@/views/course/list/index.vue'),
+      meta: {
+        title: '课程列表',
+        showParent: true
+      }
     }
   ]
 } satisfies RouteConfigsTable
