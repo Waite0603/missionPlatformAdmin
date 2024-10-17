@@ -24,6 +24,16 @@ export default {
         title: '课程列表',
         showParent: true
       }
+    },
+    {
+      path: '/courses/edit/:id',
+      name: 'CoursesEdit',
+      component: () => import('@/views/course/edit/index.vue'),
+      meta: {
+        title: '编辑课程',
+        showLink: false,
+        activePath: '/courses/list'
+      }
     }
   ]
 } satisfies RouteConfigsTable

@@ -39,6 +39,28 @@ export type CourseInfoListResult = {
   data: CourseInfoItem[]
 }
 
+// 课程播放列表类型
+export type ChapterListItem = {
+  id: number
+  name: string
+  course_id: number
+  video: string
+  create_time: string
+  update_time: string
+  watch_num: number
+  author_id: number
+  status: number
+}
+
+export type CourseDetailResult = {
+  code: number
+  msg: string
+  data: {
+    course: CourseInfoItem
+    chapter: ChapterListItem[]
+  }
+}
+
 // 查看所有分类标签
 export const getCourseCategoryAPI = () => {
   return http.request<CourseCategoryListResult>('get', '/course/category/list')
@@ -67,4 +89,17 @@ export const getCourseAPI = () => {
 // 删除课程
 export const deleteCourseAPI = (id: number) => {
   return http.request<Result>('get', '/course/delete?id=' + id)
+}
+
+// 根据 id 查看课程
+export const getCourseDetailByIdAPI = (id: number) => {
+  return http.request<CourseDetailResult>(
+    'get',
+    '/course/chapter/list?courseId=' + id
+  )
+}
+
+// 更新课程信息
+export const updateCourseAPI = (data: object) => {
+  return http.request<Result>('post', '/course/update', { data })
 }

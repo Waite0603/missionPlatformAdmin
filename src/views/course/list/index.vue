@@ -39,8 +39,16 @@
             @click="deleteCourse(row.id)"
           >
             Delete
-          </el-button></template
-        >
+          </el-button>
+          <el-button
+            link
+            type="primary"
+            size="small"
+            @click="updateCourse(row.id)"
+          >
+            Update
+          </el-button>
+        </template>
       </pure-table>
     </el-card>
   </div>
@@ -54,6 +62,7 @@ import {
 } from '@/api/course'
 import type { CourseInfoItem, CourseCategoryParams } from '@/api/course'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'CourseList'
@@ -104,6 +113,11 @@ const getCourseCategoryList = () => {
       name: '全部'
     } as CourseCategoryParams)
   })
+}
+
+const router = useRouter()
+const updateCourse = (id: number) => {
+  router.push(`/courses/edit/${id}`)
 }
 
 let courseAllList: CourseInfoItem[] = []
