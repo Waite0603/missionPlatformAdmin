@@ -14,7 +14,7 @@
               :value="item.name"
             />
           </el-select>
-          <el-button type="primary">添加文章</el-button>
+          <el-button type="primary" @click="addCourse">添加课程</el-button>
         </div>
       </div>
     </el-card>
@@ -54,15 +54,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, h } from 'vue'
 import {
   getCourseAPI,
   deleteCourseAPI,
-  getCourseCategoryAPI
+  getCourseCategoryAPI,
+  addCourseAPI
 } from '@/api/course'
 import type { CourseInfoItem, CourseCategoryParams } from '@/api/course'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
+import { addDialog } from '@/components/ReDialog'
+import AddCourseForm from './AddCourseForm.vue'
 
 defineOptions({
   name: 'CourseList'
@@ -156,6 +159,39 @@ const deleteCourse = (id: number) => {
         }
       })
     })
+  })
+}
+
+// 添加课程
+const addCourse = () => {
+  addDialog({
+    title: '添加课程',
+    props: {
+      courseData: {} as CourseInfoItem
+    },
+    contentRenderer: () => h(AddCourseForm),
+    beforeSure: (done, { options }) => {
+      const form = options.props.courseData
+      if (!form.name || !form.desc || !form.category) {
+        ElMessage.error('请填写完整信息')
+        return
+      }
+      addCourseAPI({
+        ...form,
+        cover: 'default.jpg'
+      }).then(res => {
+        if (res.code === 200) {
+          ElMessage.success('添加成功')
+
+          setTimeout(() => {
+            router.push(`/courses/edit/${res.data[0].id}`)
+          }, 1000)
+          done()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }
   })
 }
 

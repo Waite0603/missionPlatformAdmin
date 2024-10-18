@@ -91,6 +91,13 @@ export const deleteCourseAPI = (id: number) => {
   return http.request<Result>('get', '/course/delete?id=' + id)
 }
 
+// 添加课程
+export const addCourseAPI = (data: object) => {
+  return http.request<CourseCategoryListResult>('post', '/course/create', {
+    data
+  })
+}
+
 // 根据 id 查看课程
 export const getCourseDetailByIdAPI = (id: number) => {
   return http.request<CourseDetailResult>(

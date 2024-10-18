@@ -72,12 +72,7 @@ import { useWindowSize } from '@vueuse/core'
 
 const { width } = useWindowSize()
 
-import {
-  addDialog,
-  closeDialog,
-  updateDialog,
-  closeAllDialog
-} from '@/components/ReDialog'
+import { addDialog } from '@/components/ReDialog'
 
 const {
   ArticleData,
