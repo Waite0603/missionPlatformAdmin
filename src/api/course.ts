@@ -103,3 +103,13 @@ export const getCourseDetailByIdAPI = (id: number) => {
 export const updateCourseAPI = (data: object) => {
   return http.request<Result>('post', '/course/update', { data })
 }
+
+// 添加课程章节
+export const addCourseChapterAPI = (data: object) => {
+  return http.request<Result>('post', '/course/chapter/create', { data })
+}
+
+// 更新课程章节
+export const updateCourseChapterAPI = (data: object) => {
+  return http.request<Result>('post', '/course/chapter/update', { data })
+}

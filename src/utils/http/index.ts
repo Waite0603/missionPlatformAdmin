@@ -82,6 +82,7 @@ class PureHttp {
               if (data) {
                 const now = new Date().getTime()
                 const expired = parseInt(data.expires) - now <= 0
+
                 if (expired) {
                   if (!PureHttp.isRefreshing) {
                     PureHttp.isRefreshing = true
@@ -91,6 +92,7 @@ class PureHttp {
                       .then(res => {
                         const token = res.data.accessToken
                         config.headers['Authorization'] = formatToken(token)
+
                         PureHttp.requests.forEach(cb => cb(token))
                         PureHttp.requests = []
                       })

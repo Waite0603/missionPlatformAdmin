@@ -15,7 +15,23 @@
               <source :src="`/api/video/` + row.video" type="video/mp4" />
             </video>
           </template>
+
+          <template #operation="{ row }">
+            <el-button
+              link
+              type="primary"
+              size="small"
+              @click="addOrUpdateChapter(row)"
+            >
+              Update
+            </el-button>
+          </template>
         </pure-table>
+        <div class="flex justify-center">
+          <el-button type="primary" class="mt-5" @click="addOrUpdateChapter()"
+            >Add Chapter</el-button
+          >
+        </div>
       </el-col>
     </el-row>
   </el-card>
@@ -24,14 +40,20 @@
 <script setup lang="ts">
 // 获取 params 里的 id
 import { useRoute } from 'vue-router'
-import { getCourseDetailByIdAPI, getCourseCategoryAPI } from '@/api/course'
+import {
+  getCourseDetailByIdAPI,
+  addCourseChapterAPI,
+  updateCourseChapterAPI
+} from '@/api/course'
 import type {
   ChapterListItem,
   CourseInfoItem,
   CourseCategoryParams
 } from '@/api/course'
 import CourseForm from './CourseForm.vue'
-import { onMounted, ref } from 'vue'
+import { addDialog } from '@/components/ReDialog'
+import EditVideoForm from './EditVideoForm.vue'
+import { onMounted, ref, h } from 'vue'
 import { ElMessage } from 'element-plus'
 
 defineOptions({
@@ -39,7 +61,6 @@ defineOptions({
 })
 
 const route = useRoute()
-const edited = ref(false)
 const id = Number(route.params.id)
 
 const courseInfo = ref<CourseInfoItem | null>(null)
@@ -65,6 +86,10 @@ const chapterColumns: TableColumnList = [
   {
     label: 'Update Time',
     prop: 'update_time'
+  },
+  {
+    label: 'Operation',
+    slot: 'operation'
   }
 ]
 
@@ -80,13 +105,54 @@ const getCourseDetail = async () => {
   if (res.code === 200) {
     courseInfo.value = res.data.course
     chapterList.value = res.data.chapter
-
-    console.log(chapterList.value)
   } else {
     ElMessage.error(res.msg)
 
     history.back()
   }
+}
+
+// 添加或更新章节
+const addOrUpdateChapter = (row?: ChapterListItem) => {
+  addDialog({
+    title: row ? '更新章节' : '添加章节',
+    props: {
+      chapterData: row || ({} as ChapterListItem)
+    },
+    contentRenderer: () => h(EditVideoForm),
+    beforeSure: (done, { options }) => {
+      const form = options.props.chapterData
+      if (!form.name || !form.video) {
+        ElMessage.error('请填写完整信息')
+        return
+      }
+
+      if (row) {
+        updateCourseChapterAPI(form).then(res => {
+          if (res.code === 200) {
+            ElMessage.success('更新成功')
+            getCourseDetail()
+            done()
+          } else {
+            ElMessage.error(res.msg)
+          }
+        })
+      } else {
+        addCourseChapterAPI({
+          ...form,
+          courseId: id
+        }).then(res => {
+          if (res.code === 200) {
+            ElMessage.success('添加成功')
+            getCourseDetail()
+            done()
+          } else {
+            ElMessage.error(res.msg)
+          }
+        })
+      }
+    }
+  })
 }
 
 onMounted(() => {
