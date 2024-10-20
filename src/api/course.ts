@@ -86,6 +86,11 @@ export const getCourseAPI = () => {
   return http.request<CourseInfoListResult>('get', '/course/list')
 }
 
+// 更改课程会员状态
+export const updateCourseStatusAPI = (id: number) => {
+  return http.request<Result>('get', '/course/change/status?id=' + id)
+}
+
 // 删除课程
 export const deleteCourseAPI = (id: number) => {
   return http.request<Result>('get', '/course/delete?id=' + id)

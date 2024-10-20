@@ -35,17 +35,98 @@
           </div>
         </el-card>
       </re-col>
+
+      <re-col
+        v-motion
+        class="mb-[18px]"
+        :value="18"
+        :xs="24"
+        :initial="{
+          opacity: 0,
+          y: 100
+        }"
+        :enter="{
+          opacity: 1,
+          y: 0,
+          transition: {
+            delay: 400
+          }
+        }"
+      >
+        <el-card class="bar-card" shadow="never">
+          <div class="flex justify-between">
+            <span class="text-md font-medium">分析概览</span>
+            <Segmented v-model="curWeek" :options="optionsBasis" />
+          </div>
+          <div class="flex justify-between items-start mt-3">
+            <ChartBar
+              :requireData="barChartData[curWeek].requireData"
+              :questionData="barChartData[curWeek].questionData"
+            />
+          </div>
+        </el-card>
+      </re-col>
+
+      <re-col
+        v-motion
+        class="mb-[18px]"
+        :value="6"
+        :xs="24"
+        :initial="{
+          opacity: 0,
+          y: 100
+        }"
+        :enter="{
+          opacity: 1,
+          y: 0,
+          transition: {
+            delay: 480
+          }
+        }"
+      >
+        <el-card shadow="never">
+          <div class="flex justify-between">
+            <span class="text-md font-medium">解决概率</span>
+          </div>
+          <div
+            v-for="(item, index) in progressData"
+            :key="index"
+            :class="[
+              'flex',
+              'justify-between',
+              'items-start',
+              index === 0 ? 'mt-8' : 'mt-[2.15rem]'
+            ]"
+          >
+            <el-progress
+              :text-inside="true"
+              :percentage="item.percentage"
+              :stroke-width="21"
+              :color="item.color"
+              striped
+              striped-flow
+              :duration="item.duration"
+            />
+            <span class="text-nowrap ml-2 text-text_color_regular text-sm">
+              {{ item.week }}
+            </span>
+          </div>
+        </el-card>
+      </re-col>
     </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useDark } from '@pureadmin/utils'
+import { chartData, barChartData, progressData, latestNewsData } from './data'
+import { ChartBar, ChartLine, ChartRound } from './components/charts'
 import ReCol from '@/components/ReCol'
 import GroupLine from '@iconify-icons/ri/group-line'
 import Question from '@iconify-icons/ri/question-answer-line'
 import CheckLine from '@iconify-icons/ri/chat-check-line'
 import Smile from '@iconify-icons/ri/star-smile-line'
+import { ref, markRaw } from 'vue'
 
 defineOptions({
   name: 'Welcome'
@@ -55,37 +136,13 @@ const { isDark } = useDark()
 
 const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
-/** 需求人数、提问数量、解决数量、用户满意度 */
-const chartData = [
+let curWeek = ref(1) // 0上周、1本周
+const optionsBasis = [
   {
-    icon: GroupLine,
-    bgColor: '#effaff',
-    color: '#41b6ff',
-    duration: 2200,
-    name: '需求人数',
-    value: 36000,
-    percent: '+88%',
-    data: [2101, 5288, 4239, 4962, 6752, 5208, 7450] // 平滑折线图数据
+    label: '上周'
   },
   {
-    icon: Question,
-    bgColor: '#fff5f4',
-    color: '#e85f33',
-    duration: 1600,
-    name: '提问数量',
-    value: 16580,
-    percent: '+70%',
-    data: [2216, 1148, 1255, 788, 4821, 1973, 4379]
-  },
-  {
-    icon: CheckLine,
-    bgColor: '#eff8f4',
-    color: '#26ce83',
-    duration: 1500,
-    name: '解决数量',
-    value: 16499,
-    percent: '+99%',
-    data: [861, 1002, 3195, 1715, 3666, 2415, 3645]
+    label: '本周'
   }
 ]
 </script>

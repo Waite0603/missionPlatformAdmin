@@ -48,6 +48,14 @@
           >
             Update
           </el-button>
+          <el-button
+            link
+            type="primary"
+            size="small"
+            @click="updateCourseStatus(row.id)"
+          >
+            {{ row.status === 1 ? 'ToVIP' : 'ToFree' }}
+          </el-button>
         </template>
       </pure-table>
     </el-card>
@@ -59,10 +67,11 @@ import {
   getCourseAPI,
   deleteCourseAPI,
   getCourseCategoryAPI,
-  addCourseAPI
+  addCourseAPI,
+  updateCourseStatusAPI
 } from '@/api/course'
 import type { CourseInfoItem, CourseCategoryParams } from '@/api/course'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, ElTag } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { addDialog } from '@/components/ReDialog'
 import AddCourseForm from './AddCourseForm.vue'
@@ -97,7 +106,20 @@ const columns: TableColumnList = [
     label: 'Created At',
     prop: 'create_time'
   },
-  ,
+  {
+    label: 'status',
+    cellRenderer: ({ row }) => {
+      return h(
+        ElTag,
+        {
+          type: row.status === 1 ? 'success' : 'danger'
+        },
+        {
+          default: () => (row.status === 1 ? '免费课程' : '会员专享')
+        }
+      )
+    }
+  },
   {
     label: '操作',
     slot: 'operation',
@@ -121,6 +143,18 @@ const getCourseCategoryList = () => {
 const router = useRouter()
 const updateCourse = (id: number) => {
   router.push(`/courses/edit/${id}`)
+}
+
+const updateCourseStatus = (id: number) => {
+  updateCourseStatusAPI(id).then(res => {
+    if (res.code === 200) {
+      ElMessage.success('更新成功')
+
+      getCourseList()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
 }
 
 let courseAllList: CourseInfoItem[] = []
