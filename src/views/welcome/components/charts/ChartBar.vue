@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useDark, useECharts } from "@pureadmin/utils";
-import { type PropType, ref, computed, watch, nextTick } from "vue";
+import { useDark, useECharts } from '@pureadmin/utils'
+import { type PropType, ref, computed, watch, nextTick } from 'vue'
 
 const props = defineProps({
   requireData: {
@@ -11,60 +11,60 @@ const props = defineProps({
     type: Array as PropType<Array<number>>,
     default: () => []
   }
-});
+})
 
-const { isDark } = useDark();
+const { isDark } = useDark()
 
-const theme = computed(() => (isDark.value ? "dark" : "light"));
+const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 
-const chartRef = ref();
+const chartRef = ref()
 const { setOptions } = useECharts(chartRef, {
   theme
-});
+})
 
 watch(
   () => props,
   async () => {
-    await nextTick(); // 确保DOM更新完成后再执行
+    await nextTick() // 确保DOM更新完成后再执行
     setOptions({
-      container: ".bar-card",
-      color: ["#41b6ff", "#e85f33"],
+      container: '.bar-card',
+      color: ['#41b6ff', '#e85f33'],
       tooltip: {
-        trigger: "axis",
+        trigger: 'axis',
         axisPointer: {
-          type: "none"
+          type: 'none'
         }
       },
       grid: {
-        top: "20px",
-        left: "50px",
+        top: '20px',
+        left: '50px',
         right: 0
       },
       legend: {
-        data: ["需求人数", "提问数量"],
+        data: ['需求人数', '提问数量'],
         textStyle: {
-          color: "#606266",
-          fontSize: "0.875rem"
+          color: '#606266',
+          fontSize: '0.875rem'
         },
         bottom: 0
       },
       xAxis: [
         {
-          type: "category",
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+          type: 'category',
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
           axisLabel: {
-            fontSize: "0.875rem"
+            fontSize: '0.875rem'
           },
           axisPointer: {
-            type: "shadow"
+            type: 'shadow'
           }
         }
       ],
       yAxis: [
         {
-          type: "value",
+          type: 'value',
           axisLabel: {
-            fontSize: "0.875rem"
+            fontSize: '0.875rem'
           },
           splitLine: {
             show: false // 去网格线
@@ -74,33 +74,33 @@ watch(
       ],
       series: [
         {
-          name: "需求人数",
-          type: "bar",
+          name: '需求人数',
+          type: 'bar',
           barWidth: 10,
           itemStyle: {
-            color: "#41b6ff",
+            color: '#41b6ff',
             borderRadius: [10, 10, 0, 0]
           },
           data: props.requireData
         },
         {
-          name: "提问数量",
-          type: "bar",
+          name: '提问数量',
+          type: 'bar',
           barWidth: 10,
           itemStyle: {
-            color: "#e86033ce",
+            color: '#e86033ce',
             borderRadius: [10, 10, 0, 0]
           },
           data: props.questionData
         }
       ]
-    });
+    })
   },
   {
     deep: true,
     immediate: true
   }
-);
+)
 </script>
 
 <template>

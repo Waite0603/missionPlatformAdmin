@@ -1,51 +1,51 @@
-import { tableData } from "../../data";
-import { delay } from "@pureadmin/utils";
-import { ref, onMounted, reactive } from "vue";
-import type { PaginationProps } from "@pureadmin/table";
-import ThumbUp from "@iconify-icons/ri/thumb-up-line";
-import Hearts from "@iconify-icons/ri/hearts-line";
-import Empty from "./empty.svg?component";
+import { tableData } from '../../data'
+import { delay } from '@pureadmin/utils'
+import { ref, onMounted, reactive } from 'vue'
+import type { PaginationProps } from '@pureadmin/table'
+import ThumbUp from '@iconify-icons/ri/thumb-up-line'
+import Hearts from '@iconify-icons/ri/hearts-line'
+import Empty from './empty.svg?component'
 
 export function useColumns() {
-  const dataList = ref([]);
-  const loading = ref(true);
+  const dataList = ref([])
+  const loading = ref(true)
   const columns: TableColumnList = [
     {
       sortable: true,
-      label: "序号",
-      prop: "id"
+      label: '序号',
+      prop: 'id'
     },
     {
       sortable: true,
-      label: "需求人数",
-      prop: "requiredNumber",
+      label: '需求人数',
+      prop: 'requiredNumber',
       filterMultiple: false,
-      filterClassName: "pure-table-filter",
+      filterClassName: 'pure-table-filter',
       filters: [
-        { text: "≥16000", value: "more" },
-        { text: "<16000", value: "less" }
+        { text: '≥16000', value: 'more' },
+        { text: '<16000', value: 'less' }
       ],
       filterMethod: (value, { requiredNumber }) => {
-        return value === "more"
+        return value === 'more'
           ? requiredNumber >= 16000
-          : requiredNumber < 16000;
+          : requiredNumber < 16000
       }
     },
     {
       sortable: true,
-      label: "提问数量",
-      prop: "questionNumber"
+      label: '提问数量',
+      prop: 'questionNumber'
     },
     {
       sortable: true,
-      label: "解决数量",
-      prop: "resolveNumber"
+      label: '解决数量',
+      prop: 'resolveNumber'
     },
     {
       sortable: true,
-      label: "用户满意度",
+      label: '用户满意度',
       minWidth: 100,
-      prop: "satisfaction",
+      prop: 'satisfaction',
       cellRenderer: ({ row }) => (
         <div class="flex justify-center w-full">
           <span class="flex items-center w-[60px]">
@@ -60,38 +60,38 @@ export function useColumns() {
     },
     {
       sortable: true,
-      label: "统计日期",
-      prop: "date"
+      label: '统计日期',
+      prop: 'date'
     },
     {
-      label: "操作",
-      fixed: "right",
-      slot: "operation"
+      label: '操作',
+      fixed: 'right',
+      slot: 'operation'
     }
-  ];
+  ]
 
   /** 分页配置 */
   const pagination = reactive<PaginationProps>({
     pageSize: 10,
     currentPage: 1,
-    layout: "prev, pager, next",
+    layout: 'prev, pager, next',
     total: 0,
-    align: "center"
-  });
+    align: 'center'
+  })
 
   function onCurrentChange(page: number) {
-    console.log("onCurrentChange", page);
-    loading.value = true;
+    console.log('onCurrentChange', page)
+    loading.value = true
     delay(300).then(() => {
-      loading.value = false;
-    });
+      loading.value = false
+    })
   }
 
   onMounted(() => {
-    dataList.value = tableData;
-    pagination.total = dataList.value.length;
-    loading.value = false;
-  });
+    dataList.value = tableData
+    pagination.total = dataList.value.length
+    loading.value = false
+  })
 
   return {
     Empty,
@@ -100,5 +100,5 @@ export function useColumns() {
     dataList,
     pagination,
     onCurrentChange
-  };
+  }
 }

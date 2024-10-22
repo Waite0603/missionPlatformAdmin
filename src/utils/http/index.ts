@@ -13,6 +13,7 @@ import { stringify } from 'qs'
 import NProgress from '../progress'
 import { getToken, formatToken } from '@/utils/auth'
 import { useUserStoreHook } from '@/store/modules/user'
+import { formatTimeData } from '@/utils/formatResponse'
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -124,6 +125,8 @@ class PureHttp {
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
         const $config = response.config
+        // 处理时间格式
+        formatTimeData(response.data)
         // 关闭进度条动画
         NProgress.done()
         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调

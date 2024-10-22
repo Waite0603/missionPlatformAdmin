@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { useDark, useECharts } from "@pureadmin/utils";
+import { ref, computed } from 'vue'
+import { useDark, useECharts } from '@pureadmin/utils'
 
-const { isDark } = useDark();
+const { isDark } = useDark()
 
-const theme = computed(() => (isDark.value ? "dark" : "light"));
+const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 
-const chartRef = ref();
+const chartRef = ref()
 const { setOptions } = useECharts(chartRef, {
   theme,
-  renderer: "svg"
-});
+  renderer: 'svg'
+})
 
 setOptions({
-  container: ".line-card",
+  container: '.line-card',
   title: {
-    text: "100%",
-    left: "47%",
-    top: "30%",
-    textAlign: "center",
+    text: '100%',
+    left: '47%',
+    top: '30%',
+    textAlign: 'center',
     textStyle: {
-      fontSize: "16",
+      fontSize: '16',
       fontWeight: 600
     }
   },
   polar: {
-    radius: ["100%", "90%"],
-    center: ["50%", "50%"]
+    radius: ['100%', '90%'],
+    center: ['50%', '50%']
   },
   angleAxis: {
     max: 100,
     show: false
   },
   radiusAxis: {
-    type: "category",
+    type: 'category',
     show: true,
     axisLabel: {
       show: false
@@ -47,25 +47,25 @@ setOptions({
   },
   series: [
     {
-      type: "bar",
+      type: 'bar',
       roundCap: true,
       barWidth: 2,
       showBackground: true,
       backgroundStyle: {
-        color: "#dfe7ef"
+        color: '#dfe7ef'
       },
       data: [100],
-      coordinateSystem: "polar",
-      color: "#7846e5",
+      coordinateSystem: 'polar',
+      color: '#7846e5',
       itemStyle: {
         shadowBlur: 2,
-        shadowColor: "#7846e5",
+        shadowColor: '#7846e5',
         shadowOffsetX: 0,
         shadowOffsetY: 0
       }
     }
   ]
-});
+})
 </script>
 
 <template>
